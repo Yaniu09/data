@@ -28,7 +28,7 @@ class HomeController extends Controller
         $v = Vendor::with('category')->get();
        
 
-        dd($v);
+       
         
         return view('home', compact (['v']));
     }

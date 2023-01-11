@@ -34,7 +34,7 @@
                                         <td>{{ $vendors->name }}</td>
                                         <td>{{ $vendors->phone }}</td>
                                         <td>{{ $vendors->email }}</td>
-                                        <td>{{ $vendor->category->name }}</td>
+                                        <td>{{ $vendors->category->name }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
