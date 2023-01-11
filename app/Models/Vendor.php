@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Catergory;
 
 
 class Vendor extends Model
@@ -12,9 +13,8 @@ class Vendor extends Model
 
     protected $fillable = [];
 
-    public function Catergory()
+    public function category()
     {
-        return $this->BelongsTo('App\Models\Catergory','catergory_id' );
-        
+        return $this->belongsTo('App\Models\Catergory');
     }
 }

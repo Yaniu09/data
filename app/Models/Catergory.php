@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Vendor;
 
 class Catergory extends Model
 {
@@ -11,7 +12,7 @@ class Catergory extends Model
 
     protected $fillable = [];
 
-    public function vendor()
+    public function vendors()
     {
         return $this->hasMany('App\Models\Vendor');
     }

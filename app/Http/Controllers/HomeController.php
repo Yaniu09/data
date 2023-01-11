@@ -25,12 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $v = Vendor::first()->Catergory;
-        $c = Catergory::find(1)->Vendor;
+        $v = Vendor::with('category')->get();
+       
 
         dd($v);
-
-        
         
         return view('home', compact (['v']));
     }
