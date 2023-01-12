@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vendor;
+use App\Models\Number;
+use App\Models\Sector;
 use App\Http\Requests\StoreVendorRequest;
 use App\Http\Requests\UpdateVendorRequest;
+use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
@@ -13,11 +16,17 @@ class VendorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+
     public function index()
     {
-        $v = Vendor::all();
+        $sector = Sector::all();
         
-        return view('vendor', compact (['v']));
+        return view('vendor', compact (['sector']));
     }
 
     /**
@@ -38,7 +47,17 @@ class VendorController extends Controller
      */
     public function store(StoreVendorRequest $request)
     {
-        //
+
+        $request->validate([
+            'lno' => 'required',
+            'party' => 'required',
+            'purpose' => 'required',
+            'sector_code' => 'required',
+        ]);
+        
+         Number::create($request->all());
+
+        return redirect()->route('vendor')->with('success','Number Has Been successfully Generated');
     }
 
     /**

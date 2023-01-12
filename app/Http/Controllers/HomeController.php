@@ -25,10 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $v = Vendor::with('category')->get();
-       
-
-       
+        $v = Vendor::with('category')->paginate(20);
+    
         
         return view('home', compact (['v']));
     }

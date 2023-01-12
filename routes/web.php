@@ -23,4 +23,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/vendor', [App\Http\Controllers\VendorController::class, 'index']);
+
+
+Route::resource('vendor', VendorController::class);

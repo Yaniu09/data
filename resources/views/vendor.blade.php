@@ -14,33 +14,44 @@
                         </div>
                     @endif
                     
-                
+                    <form action="{{ route('vendor.store') }}" method="POST">
+                        @csrf
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                            <label for="inputEmail4">Designated Office/Person Name</label>
+                            <input type="text" class="form-control"  placeholder="Name" name="party">
+                            </div>
+                            <div class="form-group col-md-4">
+                            <label for="inputPassword4">Purpose </label>
+                            <input type="text" class="form-control" placeholder="Purpose" name="purpose">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputState">Type</label>
+                                <select id="inputState" class="form-control" name="sector_code">
+                                <option selected disabled >Choose a Type</option>
+                                    <option value="Agreenment">Agreenment</option>
+                                    <option value="Agreenment">Letter</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputState">Business Sector</label>
+                                <select id="inputState" class="form-control" name="sector_code">
+                                <option selected disabled >Choose a Sector</option>
+                                    @foreach ($sector as $sectors)
+
+                                    <option value="{{ $sectors->code }}"  >{{ $sectors->name }}</option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="hidden" id="custId" name="lno" value="{{ $sectors->code }}/23" >
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Get Number</button>
+                    </form>
 
                     
-                    @foreach ($v as $vendors)
-    
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Vendor Name</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Catergory</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                        <td>{{ $vendors->name }}</td>
-                                        <td>{{ $vendors->phone }}</td>
-                                        <td>{{ $vendors->email }}</td>
-                                        <td>{{ $vendors->catergory_id }}</td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    @endforeach
+                
                 </div>
             </div>
         </div>
