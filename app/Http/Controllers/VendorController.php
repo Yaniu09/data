@@ -11,97 +11,113 @@ use Illuminate\Http\Request;
 
 class VendorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
 
-     public function __construct()
-     {
-         $this->middleware('auth');
-     }
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
 
-    public function index()
-    {
-        $sector = Sector::all();
-        
-        return view('vendor', compact (['sector']));
-    }
+  public function index()
+  {
+    $sector = Sector::all();
+    $numbers = Number::paginate(20);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    return view('vendor', compact('sector', 'numbers'));
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreVendorRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreVendorRequest $request)
-    {
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    //
+  }
 
-        $request->validate([
-            'lno' => 'required',
-            'party' => 'required',
-            'purpose' => 'required',
-            'sector_code' => 'required',
-        ]);
-        
-         Number::create($request->all());
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \App\Http\Requests\StoreVendorRequest  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(Request $request)
+  {
+    $request->validate([
+      'party' => 'required',
+      'purpose' => 'required',
+      'type' => 'required',
+      'sector_code' => 'required',
+    ]);
 
-        return redirect()->route('vendor')->with('success','Number Has Been successfully Generated');
-    }
+    $sector = Sector::where('code', $request->sector_code)->first();
+    $number = $sector->last_number + 1;
+    $year = date('y');
+    $sector_code = strtoupper($request->sector_code);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Vendor  $vendor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Vendor $vendor)
-    {
-        //
-    }
+    $letter_no = "{$sector_code}/{$request->type}/{$year}/{$number}";
+    $sector->last_number = $number;
+    $sector->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Vendor  $vendor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Vendor $vendor)
-    {
-        //
-    }
+    $number = Number::create([
+      'lno' => $letter_no,
+      'party' => $request->party,
+      'purpose' => $request->purpose,
+      'sector_code' => $request->sector_code,
+    ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateVendorRequest  $request
-     * @param  \App\Models\Vendor  $vendor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateVendorRequest $request, Vendor $vendor)
-    {
-        //
-    }
+    $msg = "Number Has Been successfully Generated - {$letter_no}";
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Vendor  $vendor
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Vendor $vendor)
-    {
-        //
-    }
+    return redirect()->route('vendor.index')->with('alert-success', $msg);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  \App\Models\Vendor  $vendor
+   * @return \Illuminate\Http\Response
+   */
+  public function show(Vendor $vendor)
+  {
+    //
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  \App\Models\Vendor  $vendor
+   * @return \Illuminate\Http\Response
+   */
+  public function edit(Vendor $vendor)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \App\Http\Requests\UpdateVendorRequest  $request
+   * @param  \App\Models\Vendor  $vendor
+   * @return \Illuminate\Http\Response
+   */
+  public function update(UpdateVendorRequest $request, Vendor $vendor)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  \App\Models\Vendor  $vendor
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy(Vendor $vendor)
+  {
+    //
+  }
 }
